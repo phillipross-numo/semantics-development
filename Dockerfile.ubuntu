@@ -1,0 +1,16 @@
+ARG PARENT_TAG=jammy-20220428
+FROM ubuntu:${PARENT_TAG}
+
+# pin locale to UTF-8
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
+
+# install updates and required packages, and setup locale
+RUN DEBIAN_FRONTEND=noninteractive && \
+    rm /bin/sh && ln -s /bin/bash /bin/sh && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install locales software-properties-common && \
+    locale-gen ${LC_ALL} && \
+    rm -rf /var/lib/apt/lists/*

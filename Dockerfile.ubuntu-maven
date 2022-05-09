@@ -1,0 +1,21 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=17
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG}
+
+# install updates and required packages
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install gnupg && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin maven version
+ARG MAVEN_VER=3.8.5
+
+# install sdkman and java runtime
+ENV SDKMAN_DIR=/opt/sdkman
+RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
+    sdk install maven ${MAVEN_VER}
+
+ENV MAVEN_HOME=${SDKMAN_DIR}/candidates/maven/current
+ENV PATH=${MAVEN_HOME}/bin:${PATH}
