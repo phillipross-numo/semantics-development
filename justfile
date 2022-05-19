@@ -2,7 +2,7 @@
 export PREFIX := env_var_or_default('PREFIX', 'llsem-')
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG', 'jammy-20220428')
 
-all: build-jena build-blazegraph
+all: build-ubuntu build-zulu build-maven build-jena build-blazegraph
 
 build-ubuntu:
    time docker image build --pull -f Dockerfile.ubuntu -t ${PREFIX}ubuntu:latest --build-arg PARENT_TAG=${UBUNTU_TAG} .
