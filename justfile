@@ -29,8 +29,13 @@ build-maven-11: build-zulu-11
 build-maven-17: build-zulu-17
     time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 .
 
-build-jena: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:latest --build-arg PREFIX=${PREFIX} .
+build-jena: build-jena-11 build-jena-17
+
+build-jena-11: build-maven-11
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 .
+
+build-jena-17: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 .
 
 build-blazegraph: build-maven-8
    time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} .
