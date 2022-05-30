@@ -19,4 +19,4 @@ RUN curl -s "https://get.sdkman.io" | bash && \
     sdk install java ${JAVA_VER_DISTRO}
 
 ENV JAVA_HOME=${SDKMAN_DIR}/candidates/java/current
-ENV PATH=${MAVEN_HOME}/bin:${JAVA_HOME}/bin:${PATH}
+ENV PATH=${JAVA_HOME}/bin:${PATH}
