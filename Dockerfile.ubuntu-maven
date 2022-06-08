@@ -1,6 +1,6 @@
 ARG PREFIX=llsem-
 ARG PARENT_TAG=17
-FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG}
+FROM ${PREFIX}ubuntu-kotlin:${PARENT_TAG}
 
 # install updates and required packages
 RUN DEBIAN_FRONTEND=noninteractive && \

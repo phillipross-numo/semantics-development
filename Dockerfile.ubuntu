@@ -1,4 +1,4 @@
-ARG PARENT_TAG=jammy-20220428
+ARG PARENT_TAG=jammy-20220531
 FROM ubuntu:${PARENT_TAG}
 
 # pin locale to UTF-8
