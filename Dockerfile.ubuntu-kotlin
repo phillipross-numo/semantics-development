@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin kotlin version
-ARG KOTLIN_VER=1.6.21
+ARG KOTLIN_VER=1.7.0
 ARG KSCRIPT_VER=4.0.3
 
 # install kotlin
