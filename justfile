@@ -11,13 +11,13 @@ build-ubuntu:
 build-zulu: build-zulu-8 build-zulu-11 build-zulu-17
 
 build-zulu-8: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=8.0.332-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=8.0.342-zulu  .
   
 build-zulu-11: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:11  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=11.0.15-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:11  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=11.0.16-zulu  .
   
 build-zulu-17: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=17.0.3-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=17.0.4-zulu  .
 
 build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17
 
