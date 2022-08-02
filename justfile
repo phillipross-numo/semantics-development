@@ -1,7 +1,7 @@
 #!/usr/bin/env just --justfile
 
 export PREFIX := env_var_or_default('PREFIX','llsem-')
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220531')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220801')
 
 all: build-ubuntu build-zulu build-maven build-jena build-blazegraph
 
