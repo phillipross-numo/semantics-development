@@ -2,6 +2,9 @@
 
 export PREFIX := env_var_or_default('PREFIX','llsem-')
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220801')
+export JAVA_VER_DISTRO_8 := "8.0.342-zulu"
+export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
+export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
 
 all: build-ubuntu build-zulu build-maven build-jena build-blazegraph
 
@@ -11,13 +14,13 @@ build-ubuntu:
 build-zulu: build-zulu-8 build-zulu-11 build-zulu-17
 
 build-zulu-8: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=8.0.342-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
   
 build-zulu-11: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:11  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=11.0.16-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:11  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11}  .
   
 build-zulu-17: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=17.0.4-zulu  .
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17}  .
 
 build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17
 
