@@ -2,7 +2,7 @@
 
 export PREFIX := env_var_or_default('PREFIX','llsem-')
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220801')
-export JAVA_VER_DISTRO_8 := "8.0.342-zulu"
+export JAVA_VER_DISTRO_8 := "8.0.345-zulu"
 export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
 export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
 export KOTLIN_VER := "1.7.10"
