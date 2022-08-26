@@ -6,7 +6,7 @@ export JAVA_VER_DISTRO_8 := "8.0.345-zulu"
 export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
 export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
 export KOTLIN_VER := "1.7.10"
-export KSCRIPT_VER := "4.0.3"
+export KSCRIPT_VER := "4.1.0"
 
 all: build-ubuntu build-zulu build-maven build-jena build-blazegraph
 
