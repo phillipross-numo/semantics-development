@@ -1,0 +1,21 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=17
+FROM ${PREFIX}ubuntu-kotlin:${PARENT_TAG}
+
+# install updates and required packages
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install gnupg && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin ant version
+ARG ANT_VER=1.10.12
+
+# install sdkman and java runtime
+ENV SDKMAN_DIR=/opt/sdkman
+RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
+    sdk install ant ${ANT_VER}
+
+ENV ANT_HOME=${SDKMAN_DIR}/candidates/ant/current
+ENV PATH=${ANT_HOME}/bin:${PATH}

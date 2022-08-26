@@ -5,6 +5,7 @@ export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220801')
 export JAVA_VER_DISTRO_8 := "8.0.345-zulu"
 export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
 export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
+export ANT_VER := "1.10.12"
 export KOTLIN_VER := "1.7.10"
 export KSCRIPT_VER := "4.1.0"
 
@@ -34,6 +35,17 @@ build-kotlin-11: build-zulu-11
 
 build-kotlin-17: build-zulu-17
    time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+
+build-ant: build-ant-8 build-ant-11 build-ant-17
+
+build-ant-8: build-kotlin-8
+   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg ANT_VER=${ANT_VER} .
+
+build-ant-11: build-kotlin-11
+   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg ANT_VER=${ANT_VER} .
+
+build-ant-17: build-kotlin-17
+   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg ANT_VER=${ANT_VER} .
 
 build-maven: build-maven-8 build-maven-11 build-maven-17
 
