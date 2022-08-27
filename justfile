@@ -6,7 +6,7 @@ export JAVA_VER_DISTRO_8 := "8.0.345-zulu"
 export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
 export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
 export KOTLIN_VER := "1.7.10"
-export KSCRIPT_VER := "4.1.0"
+export KSCRIPT_VER := "4.1.1"
 export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
 
