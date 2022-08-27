@@ -10,7 +10,7 @@ export KSCRIPT_VER := "4.1.0"
 export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
 
-all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-jena build-blazegraph
+all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-cassandra build-jena build-blazegraph
 
 build-ubuntu:
    time docker image build --pull -f Dockerfile.ubuntu -t ${PREFIX}ubuntu:latest --build-arg PARENT_TAG=${UBUNTU_TAG} .
@@ -59,6 +59,11 @@ build-maven-11: build-kotlin-11
 build-maven-17: build-kotlin-17
    time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg MAVEN_VER=${MAVEN_VER} .
 
+build-cassandra: build-cassandra-11
+
+build-cassandra-11: build-ant-11
+   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 .
+
 build-jena: build-jena-11 build-jena-17
 
 build-jena-11: build-maven-11
@@ -71,10 +76,16 @@ build-blazegraph: build-maven-8
    time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} .
 
 list-dockerhub-ubuntu-tags:
-   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'|jq '."results"[]["name"]' | grep jammy
+   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep jammy
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
 
 list-jena-upstream-main-pom-version:
-   curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml |sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
+   curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
+
+list-cassandra-upstream-main-commit-id:
+   git ls-remote https://github.com/apache/cassandra heads/trunk
+
+list-cassandra-upstream-main-build-version:
+   curl -Ls https://raw.githubusercontent.com/apache/cassandra/trunk/build.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath 'string(/project/property[@name="base.version"]/@value)' -
