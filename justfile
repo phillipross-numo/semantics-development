@@ -10,7 +10,7 @@ export KSCRIPT_VER := "4.1.0"
 export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
 
-all: build-ubuntu build-zulu build-maven build-jena build-blazegraph
+all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-jena build-blazegraph
 
 build-ubuntu:
    time docker image build --pull -f Dockerfile.ubuntu -t ${PREFIX}ubuntu:latest --build-arg PARENT_TAG=${UBUNTU_TAG} .
