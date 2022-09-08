@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in ant
-ARG CASSANDRA_GIT_COMMIT=1b2c561e
+ARG CASSANDRA_GIT_COMMIT=97a5ff99
 ARG CASSANDRA_DISTRO_VERSION=4.2
 
 # establish locations for installation and source code
