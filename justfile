@@ -13,6 +13,8 @@ export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID'
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','97a5ff99')
 export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
+export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','db8b12b7')
+export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
 
 all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-cassandra build-jena build-blazegraph
 
@@ -71,10 +73,10 @@ build-cassandra-11: build-ant-11
 build-jena: build-jena-11 build-jena-17
 
 build-jena-11: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 .
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
 
 build-jena-17: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 .
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
 
 build-blazegraph: build-maven-8
    time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
