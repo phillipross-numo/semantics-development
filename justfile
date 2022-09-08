@@ -11,7 +11,7 @@ export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','2bd33dca')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
-export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','97a5ff99')
+export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','b6d8e2ce')
 export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
 export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','db8b12b7')
 export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
@@ -97,7 +97,7 @@ build-cassandra: build-cassandra-11
 build-cassandra-11: build-ant-11
    time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_DISTRO_VERSION} .
 
-list-cassandra-upstream-main-commit-id:
+list-cassandra-upstream-trunk-commit-id:
    git ls-remote https://github.com/apache/cassandra heads/trunk
 
 list-cassandra-upstream-main-build-version:
