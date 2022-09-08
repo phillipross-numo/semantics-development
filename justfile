@@ -84,7 +84,7 @@ build-maven-17: build-kotlin-17
 build-blazegraph: build-maven-8
    time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
 
-list-blazegraph-upstream-main-commit-id:
+list-blazegraph-upstream-master-commit-id:
    git ls-remote https://github.com/blazegraph/database heads/master
 
 list-blazegraph-upstream-main-pom-version:
