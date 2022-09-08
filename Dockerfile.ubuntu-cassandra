@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in ant
-ARG CASSANDRA_GIT_COMMIT=97a5ff99
+ARG CASSANDRA_GIT_COMMIT_ID=97a5ff99
 ARG CASSANDRA_DISTRO_VERSION=4.2
 
 # establish locations for installation and source code
@@ -20,7 +20,7 @@ ENV CASSANDRA_HOME=/opt/apache-cassandra
 RUN cd /opt && \
     git clone https://github.com/apache/cassandra apache-cassandra && \
     cd apache-cassandra && \
-    git checkout ${CASSANDRA_GIT_COMMIT} && \
+    git checkout ${CASSANDRA_GIT_COMMIT_ID} && \
     ant -Duse.jdk11=true && \
     rm -Rf .*.yaml .build build* *.xml .circleci *.md debian *.properties \
            examples .git* ide .jenkins *.asc redhat *.pom src test

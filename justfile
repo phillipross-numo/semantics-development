@@ -11,6 +11,8 @@ export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','2bd33dca')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
+export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','97a5ff99')
+export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
 
 all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-cassandra build-jena build-blazegraph
 
@@ -64,7 +66,7 @@ build-maven-17: build-kotlin-17
 build-cassandra: build-cassandra-11
 
 build-cassandra-11: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 .
+   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_DISTRO_VERSION} .
 
 build-jena: build-jena-11 build-jena-17
 
