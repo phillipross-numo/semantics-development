@@ -9,6 +9,8 @@ export KOTLIN_VER := "1.7.10"
 export KSCRIPT_VER := "4.1.1"
 export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
+export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','2bd33dca')
+export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 
 all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-cassandra build-jena build-blazegraph
 
@@ -73,7 +75,7 @@ build-jena-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 .
 
 build-blazegraph: build-maven-8
-   time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} .
+   time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
 
 list-dockerhub-ubuntu-tags:
    curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep jammy
@@ -89,3 +91,9 @@ list-cassandra-upstream-main-commit-id:
 
 list-cassandra-upstream-main-build-version:
    curl -Ls https://raw.githubusercontent.com/apache/cassandra/trunk/build.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath 'string(/project/property[@name="base.version"]/@value)' -
+
+list-blazegraph-upstream-main-commit-id:
+   git ls-remote https://github.com/blazegraph/database heads/master
+
+list-blazegraph-upstream-main-pom-version:
+   curl -Ls https://raw.githubusercontent.com/blazegraph/database/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -

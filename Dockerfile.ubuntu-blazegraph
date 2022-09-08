@@ -10,41 +10,41 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG BG_GIT_COMMIT=2bd33dca
-ARG BG_VERSION=2.1.6-SNAPSHOT
+ARG BLAZEGRAPH_GIT_COMMIT_ID=2bd33dca
+ARG BLAZEGRAPH_DISTRO_VERSION=2.1.6-SNAPSHOT
 
 # establish locations for installation and source code
-ENV BG_HOME=/opt/blazegraph
-ENV BG_SRC_DIR /usr/src/build/blazegraph
+ENV BLAZEGRAPH_HOME=/opt/blazegraph
+ENV BLAZEGRAPH_SRC_DIR /usr/src/build/blazegraph
 
 # clone/checkout from revision control, build/install software, then cleanup
-RUN mkdir -p ${BG_SRC_DIR} && \
-    cd ${BG_SRC_DIR} && \
+RUN mkdir -p ${BLAZEGRAPH_SRC_DIR} && \
+    cd ${BLAZEGRAPH_SRC_DIR} && \
     git clone https://github.com/blazegraph/database blazegraph-database && \
     cd blazegraph-database && \
-    git checkout ${BG_GIT_COMMIT} && \
+    git checkout ${BLAZEGRAPH_GIT_COMMIT_ID} && \
     mvn clean install -DskipTests=true -N && \
     mvn clean install -DskipTests=true && \
     mvn clean install -P Deployment -U -DskipTests=true --projects blazegraph-jar,bigdata-jar && \
-    mkdir -p ${BG_HOME} && \
-    cd ${BG_HOME}  && \
-    cp ${BG_SRC_DIR}/blazegraph-database/blazegraph-jar/target/blazegraph-jar-${BG_VERSION}.jar ./blazegraph.jar && \
+    mkdir -p ${BLAZEGRAPH_HOME} && \
+    cd ${BLAZEGRAPH_HOME}  && \
+    cp ${BLAZEGRAPH_SRC_DIR}/blazegraph-database/blazegraph-jar/target/blazegraph-jar-${BLAZEGRAPH_DISTRO_VERSION}.jar ./blazegraph.jar && \
     rm -Rf /usr/src/build ~/.m2
 
 #############################################################################
 FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} as runtime
 
 ### ARGs do not appear to span build stages so the same ARG needs to be defined here as well
-ARG BG_VERSION=2.1.6-SNAPSHOT
+ARG BLAZEGRAPH_DISTRO_VERSION=2.1.6-SNAPSHOT
 
-ENV BG_HOME=/opt/blazegraph
-WORKDIR "${BG_HOME}"
+ENV BLAZEGRAPH_HOME=/opt/blazegraph
+WORKDIR "${BLAZEGRAPH_HOME}"
 
-COPY --from=build ${BG_HOME}/blazegraph.jar ${BG_HOME}/blazegraph.jar
+COPY --from=build ${BLAZEGRAPH_HOME}/blazegraph.jar ${BLAZEGRAPH_HOME}/blazegraph.jar
 
 # default blazegraph port
 EXPOSE 9999
 
 HEALTHCHECK CMD curl -f http://localhost:9999/ || exit 1
 
-CMD java -jar "${BG_HOME}/blazegraph.jar"
+CMD java -jar "${BLAZEGRAPH_HOME}/blazegraph.jar"
