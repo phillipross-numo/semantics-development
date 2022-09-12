@@ -7,8 +7,10 @@ export JAVA_VER_DISTRO_11 := "11.0.16-zulu"
 export JAVA_VER_DISTRO_17 := "17.0.4-zulu"
 export KOTLIN_VER := "1.7.10"
 export KSCRIPT_VER := "4.1.1"
+export SCALA_VER := env_var_or_default('SCALA_VER','3.2.0')
 export ANT_VER := "1.10.12"
 export MAVEN_VER := "3.8.6"
+export SBT_VER := env_var_or_default('SBT_VER','1.7.1')
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','2bd33dca')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','d6aee7e0')
@@ -17,7 +19,7 @@ export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','d2222be5')
 export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
 
 
-all: build-ubuntu build-zulu build-kotlin build-ant build-maven build-blazegraph build-cassandra build-jena
+all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-maven build-sbt build-blazegraph build-cassandra build-jena
 
 
 # Ubuntu recipes
@@ -54,6 +56,19 @@ build-kotlin-17: build-zulu-17
    time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
 
 
+# Scala recipes
+build-scala: build-scala-8 build-scala-11 build-scala-17
+
+build-scala-8: build-zulu-8
+   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SCALA_VER=${SCALA_VER} .
+
+build-scala-11: build-zulu-11
+   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SCALA_VER=${SCALA_VER} .
+
+build-scala-17: build-zulu-17
+   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SCALA_VER=${SCALA_VER} .
+
+
 # Apache Ant recipes
 build-ant: build-ant-8 build-ant-11 build-ant-17
 
@@ -78,6 +93,19 @@ build-maven-11: build-kotlin-11
 
 build-maven-17: build-kotlin-17
    time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg MAVEN_VER=${MAVEN_VER} .
+
+
+# SBT recipes
+build-sbt: build-sbt-8 build-sbt-11 build-sbt-17
+
+build-sbt-8: build-scala-8
+   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SBT_VER=${SBT_VER} .
+
+build-sbt-11: build-scala-11
+   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SBT_VER=${SBT_VER} .
+
+build-sbt-17: build-scala-17
+   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SBT_VER=${SBT_VER} .
 
 
 # Blazegraph recipes

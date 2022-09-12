@@ -1,0 +1,21 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=17
+FROM ${PREFIX}ubuntu-scala:${PARENT_TAG}
+
+# install updates and required packages
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install gnupg && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin sbt version
+ARG SBT_VER=1.7.1
+
+# install sbt
+ENV SDKMAN_DIR=/opt/sdkman
+RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
+    sdk install sbt ${SBT_VER}
+
+ENV SBT_HOME=${SDKMAN_DIR}/candidates/sbt/current
+ENV PATH=${SBT_HOME}/bin:${PATH}

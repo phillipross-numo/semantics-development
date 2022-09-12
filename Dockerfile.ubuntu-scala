@@ -1,0 +1,20 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=17
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG}
+
+# install updates
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin scala version
+ARG SCALA_VER=3.2.0
+
+# install scala
+ENV SDKMAN_DIR=/opt/sdkman
+RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
+    sdk install scala ${SCALA_VER}
+
+ENV SCALA_HOME=${SDKMAN_DIR}/candidates/scala/current
+ENV PATH=${SCALA_HOME}/bin:${PATH}
