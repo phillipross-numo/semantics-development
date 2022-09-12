@@ -2,7 +2,7 @@ ARG PREFIX=llsem-
 ARG PARENT_TAG=11
 FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
 
-# install updates and required packages
+# install updates and required packages, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \

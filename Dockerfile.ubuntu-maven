@@ -2,20 +2,21 @@ ARG PREFIX=llsem-
 ARG PARENT_TAG=17
 FROM ${PREFIX}ubuntu-kotlin:${PARENT_TAG}
 
-# install updates and required packages
+# install updates and required packages, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \
     apt-get -y --no-install-recommends install gnupg && \
     rm -rf /var/lib/apt/lists/*
 
-# pin maven version
+# pin versions
 ARG MAVEN_VER=3.8.6
 
-# install sdkman and java runtime
+# install software
 ENV SDKMAN_DIR=/opt/sdkman
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install maven ${MAVEN_VER}
 
+# set environment variables
 ENV MAVEN_HOME=${SDKMAN_DIR}/candidates/maven/current
 ENV PATH=${MAVEN_HOME}/bin:${PATH}

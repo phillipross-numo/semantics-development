@@ -6,7 +6,7 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-# install updates and required packages, and setup locale
+# set shell explicitly to bash, install updates and required packages, setup locale, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
     rm /bin/sh && ln -s /bin/bash /bin/sh && \
     apt-get update && \

@@ -2,19 +2,20 @@ ARG PREFIX=llsem-
 ARG PARENT_TAG=17
 FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG}
 
-# install updates
+# install updates, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
-# pin scala version
+# pin versions
 ARG SCALA_VER=3.2.0
 
-# install scala
+# install software
 ENV SDKMAN_DIR=/opt/sdkman
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install scala ${SCALA_VER}
 
+# set environment variables
 ENV SCALA_HOME=${SDKMAN_DIR}/candidates/scala/current
 ENV PATH=${SCALA_HOME}/bin:${PATH}
