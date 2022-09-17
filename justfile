@@ -15,7 +15,7 @@ export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID'
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','56ea39ec')
 export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
-export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','1022a46a')
+export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','973adc94')
 export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
 
 
