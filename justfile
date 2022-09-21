@@ -5,6 +5,8 @@ export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220815')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.345-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.16-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.4-zulu')
+export JAVA_VER_DISTRO_18 := env_var_or_default('JAVA_VER_DISTRO_18','18.0.2-zulu')
+export JAVA_VER_DISTRO_19 := env_var_or_default('JAVA_VER_DISTRO_19','19-zulu')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','1.7.10')
 export KSCRIPT_VER := env_var_or_default('KSCRIPT_VER','4.1.1')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.2.0')
@@ -31,7 +33,7 @@ list-dockerhub-ubuntu-tags:
 
 
 # OpenJDK Zulu recipes
-build-zulu: build-zulu-8 build-zulu-11 build-zulu-17
+build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-18 build-zulu-19
 
 build-zulu-8: build-ubuntu
    time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
@@ -42,6 +44,11 @@ build-zulu-11: build-ubuntu
 build-zulu-17: build-ubuntu
    time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17}  .
 
+build-zulu-18: build-ubuntu
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:18  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_18}  .
+
+build-zulu-19: build-ubuntu
+   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:19  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_19}  .
 
 # Kotlin recipes
 build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17
