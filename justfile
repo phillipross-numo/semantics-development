@@ -5,7 +5,6 @@ export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20220815')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.345-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.16.1-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.4.1-zulu')
-export JAVA_VER_DISTRO_18 := env_var_or_default('JAVA_VER_DISTRO_18','18.0.2.1-zulu')
 export JAVA_VER_DISTRO_19 := env_var_or_default('JAVA_VER_DISTRO_19','19-zulu')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','1.7.10')
 export KSCRIPT_VER := env_var_or_default('KSCRIPT_VER','4.1.1')
@@ -33,7 +32,7 @@ list-dockerhub-ubuntu-tags:
 
 
 # OpenJDK Zulu recipes
-build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-18 build-zulu-19
+build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-19
 
 build-zulu-8: build-ubuntu
    time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
@@ -44,14 +43,11 @@ build-zulu-11: build-ubuntu
 build-zulu-17: build-ubuntu
    time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17}  .
 
-build-zulu-18: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:18  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_18}  .
-
 build-zulu-19: build-ubuntu
    time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:19  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_19}  .
 
 # Kotlin recipes
-build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-18 build-kotlin-19
+build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-19
 
 build-kotlin-8: build-zulu-8
    time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
@@ -62,15 +58,12 @@ build-kotlin-11: build-zulu-11
 build-kotlin-17: build-zulu-17
    time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
 
-build-kotlin-18: build-zulu-18
-   time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
-
 build-kotlin-19: build-zulu-19
    time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
 
 
 # Scala recipes
-build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-18 build-scala-19
+build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-19
 
 build-scala-8: build-zulu-8
    time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SCALA_VER=${SCALA_VER} .
@@ -81,15 +74,12 @@ build-scala-11: build-zulu-11
 build-scala-17: build-zulu-17
    time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SCALA_VER=${SCALA_VER} .
 
-build-scala-18: build-zulu-18
-   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg SCALA_VER=${SCALA_VER} .
-
 build-scala-19: build-zulu-19
    time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg SCALA_VER=${SCALA_VER} .
 
 
 # Apache Ant recipes
-build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-18 build-ant-19
+build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-19
 
 build-ant-8: build-kotlin-8
    time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg ANT_VER=${ANT_VER} .
@@ -100,15 +90,12 @@ build-ant-11: build-kotlin-11
 build-ant-17: build-kotlin-17
    time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg ANT_VER=${ANT_VER} .
 
-build-ant-18: build-kotlin-18
-   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg ANT_VER=${ANT_VER} .
-
 build-ant-19: build-kotlin-19
    time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg ANT_VER=${ANT_VER} .
 
 
 # Apache Maven recipes
-build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-18 build-maven-19
+build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-19
 
 build-maven-8: build-kotlin-8
    time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg MAVEN_VER=${MAVEN_VER} .
@@ -119,15 +106,12 @@ build-maven-11: build-kotlin-11
 build-maven-17: build-kotlin-17
    time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg MAVEN_VER=${MAVEN_VER} .
 
-build-maven-18: build-kotlin-18
-   time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg MAVEN_VER=${MAVEN_VER} .
-
 build-maven-19: build-kotlin-19
    time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg MAVEN_VER=${MAVEN_VER} .
 
 
 # SBT recipes
-build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-18 build-sbt-19
+build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-19
 
 build-sbt-8: build-scala-8
    time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SBT_VER=${SBT_VER} .
@@ -137,9 +121,6 @@ build-sbt-11: build-scala-11
 
 build-sbt-17: build-scala-17
    time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SBT_VER=${SBT_VER} .
-
-build-sbt-18: build-scala-18
-   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg SBT_VER=${SBT_VER} .
 
 build-sbt-19: build-scala-19
    time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg SBT_VER=${SBT_VER} .
@@ -170,16 +151,13 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-11 build-jena-17 build-jena-18 build-jena-19
+build-jena: build-jena-11 build-jena-17 build-jena-19
 
 build-jena-11: build-maven-11
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
 
 build-jena-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
-
-build-jena-18: build-maven-18
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:18 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=18 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
 
 build-jena-19: build-maven-19
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
