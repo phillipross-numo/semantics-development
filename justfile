@@ -10,6 +10,7 @@ export KOTLIN_VER := env_var_or_default('KOTLIN_VER','1.7.20')
 export KSCRIPT_VER := env_var_or_default('KSCRIPT_VER','4.1.1')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.2.0')
 export ANT_VER := env_var_or_default('ANT_VER','1.10.12')
+export GRADLE_VER := env_var_or_default('GRADLE_VER','7.5.1')
 export MAVEN_VER := env_var_or_default('MAVEN_VER','3.8.6')
 export SBT_VER := env_var_or_default('SBT_VER','1.7.2')
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','829ce824')
@@ -20,7 +21,7 @@ export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','61329b10')
 export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
 
 
-all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-maven build-sbt build-blazegraph build-cassandra build-jena
+all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena
 
 
 # Ubuntu recipes
@@ -92,6 +93,22 @@ build-ant-17: build-kotlin-17
 
 build-ant-19: build-kotlin-19
    time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg ANT_VER=${ANT_VER} .
+
+
+# Gradle recipes
+build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-19
+
+build-gradle-8: build-kotlin-8
+   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg GRADLE_VER=${GRADLE_VER} .
+
+build-gradle-11: build-kotlin-11
+   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg GRADLE_VER=${GRADLE_VER} .
+
+build-gradle-17: build-kotlin-17
+   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg GRADLE_VER=${GRADLE_VER} .
+
+build-gradle-19: build-kotlin-19
+   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg GRADLE_VER=${GRADLE_VER} .
 
 
 # Apache Maven recipes
