@@ -19,6 +19,9 @@ export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','
 export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
 export JENA_GIT_COMMIT_ID := env_var_or_default('JENA_GIT_COMMIT_ID','61329b10')
 export JENA_DISTRO_VERSION := env_var_or_default('JENA_DISTRO_VERSION','4.7.0-SNAPSHOT')
+export JENA_RELEASE_PARENT_TAG := env_var_or_default('JENA_RELEASE_PARENT_TAG','11')
+export JENA_RELEASE_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_GIT_COMMIT_ID','jena-4.6.1')
+export JENA_RELEASE_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_DISTRO_VERSION','4.6.1')
 
 
 all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena
@@ -168,7 +171,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-11 build-jena-17 build-jena-19
+build-jena: build-jena-11 build-jena-17 build-jena-19 build-jena-release
 
 build-jena-11: build-maven-11
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
@@ -178,6 +181,9 @@ build-jena-17: build-maven-17
 
 build-jena-19: build-maven-19
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg JENA_GIT_COMMIT_ID=${JENA_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_DISTRO_VERSION} .
+
+build-jena-release: build-maven
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_DISTRO_VERSION} .
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
