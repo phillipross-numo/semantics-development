@@ -15,6 +15,8 @@ export MAVEN_VER := env_var_or_default('MAVEN_VER','3.8.6')
 export SBT_VER := env_var_or_default('SBT_VER','1.7.2')
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','829ce824')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
+export BLAZEGRAPH_RELEASE_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_RELEASE_GIT_COMMIT_ID','BLAZEGRAPH_RELEASE_2_1_5')
+export BLAZEGRAPH_RELEASE_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_RELEASE_DISTRO_VERSION','2.1.5')
 export CASSANDRA_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_GIT_COMMIT_ID','c5f8e63f')
 export CASSANDRA_DISTRO_VERSION := env_var_or_default('CASSANDRA_DISTRO_VERSION','4.2')
 export CASSANDRA_RELEASE_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_PARENT_TAG','11')
@@ -150,8 +152,13 @@ build-sbt-19: build-scala-19
 
 
 # Blazegraph recipes
-build-blazegraph: build-maven-8
+build-blazegraph: build-blazegraph-8 build-blazegraph-release
+
+build-blazegraph-8: build-maven-8
    time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
+
+build-blazegraph-release: build-maven-8
+   time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:${BLAZEGRAPH_RELEASE_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_RELEASE_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_RELEASE_DISTRO_VERSION} .
 
 list-blazegraph-upstream-master-commit-id:
    git ls-remote https://github.com/blazegraph/database heads/master
