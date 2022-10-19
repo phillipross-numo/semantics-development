@@ -29,6 +29,9 @@ export JENA_RELEASE_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_GIT_COMMIT
 export JENA_RELEASE_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_DISTRO_VERSION','4.6.1')
 
 
+default:
+  @echo "Invoke just --list to see a list of possible recipes to run"
+
 all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena
 
 
