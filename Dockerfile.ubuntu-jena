@@ -17,10 +17,14 @@ ARG JENA_DISTRO_VERSION=4.7.0-SNAPSHOT
 ENV JENA_HOME=/opt/jena
 ENV JENA_SRC_DIR=/usr/src/build/jena
 
-# clone/checkout from revision control, build/install software, then cleanup
+# clone/checkout from revision control
 RUN mkdir -p ${JENA_SRC_DIR} && \
     cd ${JENA_SRC_DIR} && \
-    git clone https://github.com/apache/jena apache-jena && \
+    git clone https://github.com/apache/jena apache-jena
+
+# build/install software, then cleanup
+RUN mkdir -p ${JENA_SRC_DIR} && \
+    cd ${JENA_SRC_DIR} && \
     cd apache-jena && \
     git checkout ${JENA_GIT_COMMIT_ID} && \
     mvn clean install && \

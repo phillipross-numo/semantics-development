@@ -16,9 +16,12 @@ ARG CASSANDRA_DISTRO_VERSION=4.2
 # establish locations for installation and source code
 ENV CASSANDRA_HOME=/opt/apache-cassandra
 
-# clone/checkout from revision control, build/install software, then cleanup
+# clone/checkout from revision control
 RUN cd /opt && \
-    git clone https://github.com/apache/cassandra apache-cassandra && \
+    git clone https://github.com/apache/cassandra apache-cassandra
+
+# build/install software, then cleanup
+RUN cd /opt && \
     cd apache-cassandra && \
     git checkout ${CASSANDRA_GIT_COMMIT_ID} && \
     ant -Duse.jdk11=true && \
