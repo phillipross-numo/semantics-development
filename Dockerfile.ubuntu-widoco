@@ -1,0 +1,46 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=11
+FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
+
+# install updates and required packages, and cleanup afterward
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install git && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin git commit hash along with the version specified in maven
+ARG WIDOCO_GIT_COMMIT_ID=0a16859b
+ARG WIDOCO_DISTRO_VERSION=1.4.17
+
+# establish locations for installation and source code
+ENV WIDOCO_HOME=/opt/widoco
+ENV WIDOCO_SRC_DIR /usr/src/build/widoco
+
+# clone/checkout from revision control
+RUN mkdir -p ${WIDOCO_SRC_DIR} && \
+    cd ${WIDOCO_SRC_DIR} && \
+    git clone https://github.com/dgarijo/Widoco
+
+# build/install software, then cleanup
+RUN mkdir -p ${WIDOCO_SRC_DIR} && \
+    cd ${WIDOCO_SRC_DIR} && \
+    cd Widoco && \
+    git checkout ${WIDOCO_GIT_COMMIT_ID} && \
+    mvn package && \
+    mkdir -p ${WIDOCO_HOME} && \
+    cd ${WIDOCO_HOME}  && \
+    cp ${WIDOCO_SRC_DIR}/Widoco/JAR/widoco-${WIDOCO_DISTRO_VERSION}-jar-with-dependencies.jar ./widoco.jar && \
+    rm -Rf /usr/src/build ~/.m2
+
+#############################################################################
+
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} as runtime
+
+### ARGs do not appear to span build stages so the same ARG needs to be defined here as well
+ARG WIDOCO_DISTRO_VERSION=1.4.17
+
+ENV WIDOCO_HOME=/opt/widoco
+WORKDIR "${WIDOCO_HOME}"
+
+COPY --from=build "${WIDOCO_HOME}" "${WIDOCO_HOME}"
