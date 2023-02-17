@@ -34,7 +34,7 @@ export JENA_RELEASE_4_6_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_6_D
 export JENA_RELEASE_4_7_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_7_PARENT_TAG','11')
 export JENA_RELEASE_4_7_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_7_GIT_COMMIT_ID','jena-4.7.0')
 export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_DISTRO_VERSION','4.7.0')
-export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','0a16859b')
+export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','02f0963c')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.17')
 
 default:
@@ -221,6 +221,7 @@ list-jena-upstream-main-commit-id:
 list-jena-upstream-main-pom-version:
    curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
+
 # Widoco recipes
 build-widoco: build-widoco-main-11 build-widoco-main-17 build-widoco-main-19
 
@@ -232,3 +233,9 @@ build-widoco-main-17: build-maven-17
 
 build-widoco-main-19: build-maven-19
    time docker image build -f Dockerfile.ubuntu-widoco -t ${PREFIX}ubuntu-widoco:19 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=19 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+
+list-widoco-upstream-master-commit-id:
+   git ls-remote https://github.com/dgarijo/Widoco heads/master
+
+list-widoco-upstream-maaster-pom-version:
+   curl -Ls https://raw.githubusercontent.com/dgarijo/Widoco/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
