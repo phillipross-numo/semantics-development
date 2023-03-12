@@ -17,12 +17,15 @@ export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID'
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 export BLAZEGRAPH_RELEASE_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_RELEASE_GIT_COMMIT_ID','BLAZEGRAPH_RELEASE_2_1_5')
 export BLAZEGRAPH_RELEASE_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_RELEASE_DISTRO_VERSION','2.1.5')
-export CASSANDRA_TRUNK_PARENT_TAG := env_var_or_default('CASSANDRA_TRUNK_PARENT_TAG','11')
-export CASSANDRA_TRUNK_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_TRUNK_GIT_COMMIT_ID','b7e1e44a')
-export CASSANDRA_TRUNK_DISTRO_VERSION := env_var_or_default('CASSANDRA_TRUNK_DISTRO_VERSION','4.2')
+export CASSANDRA_TRUNK_PARENT_TAG := env_var_or_default('CASSANDRA_TRUNK_PARENT_TAG','17')
+export CASSANDRA_TRUNK_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_TRUNK_JAVA_MAJOR_VERSION','17')
+export CASSANDRA_TRUNK_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_TRUNK_GIT_COMMIT_ID','4e3447ae')
+export CASSANDRA_TRUNK_DISTRO_VERSION := env_var_or_default('CASSANDRA_TRUNK_DISTRO_VERSION','5.0-SNAPSHOT')
 export CASSANDRA_RELEASE_4_0_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_0_PARENT_TAG','11')
-export CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID','cassandra-4.0.7')
-export CASSANDRA_RELEASE_4_0_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.0.7')
+export CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION','11')
+export CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID','cassandra-4.0.8')
+export CASSANDRA_RELEASE_4_0_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.0.8')
+export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION','11')
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.0')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.1.0')
@@ -181,14 +184,14 @@ list-blazegraph-upstream-main-pom-version:
 # Apache Cassandra recipes
 build-cassandra: build-cassandra-trunk build-cassandra-release-4_0 build-cassandra-release-4_1
 
-build-cassandra-trunk: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
+build-cassandra-trunk: build-ant-17
+   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_TRUNK_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
 
 build-cassandra-release-4_0: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_0_PARENT_TAG} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} .
+   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_0_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} .
 
 build-cassandra-release-4_1: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
+   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
 
 list-cassandra-upstream-trunk-commit-id:
    git ls-remote https://github.com/apache/cassandra heads/trunk

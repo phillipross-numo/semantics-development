@@ -6,27 +6,37 @@ FROM ${PREFIX}ubuntu-ant:${PARENT_TAG} as build
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y --no-install-recommends install git && \
+    apt-get -y --no-install-recommends install git make && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in ant
-ARG CASSANDRA_GIT_COMMIT_ID=b7e1e44a
-ARG CASSANDRA_DISTRO_VERSION=4.2
+ARG CASSANDRA_GIT_COMMIT_ID=4e3447ae
+ARG CASSANDRA_DISTRO_VERSION=5.0
 
 # establish locations for installation and source code
 ENV CASSANDRA_HOME=/opt/apache-cassandra
+ENV CASSANDRA_SRC_DIR=/usr/src/build/apache-cassandra
 
 # clone/checkout from revision control
-RUN cd /opt && \
+RUN mkdir -p ${CASSANDRA_SRC_DIR} && \
+    cd ${CASSANDRA_SRC_DIR} && \
     git clone https://github.com/apache/cassandra apache-cassandra
 
 # build/install software, then cleanup
-RUN cd /opt && \
+ARG JAVA_MAJOR_VERSION=11
+RUN mkdir -p ${CASSANDRA_SRC_DIR} && \
+    cd ${CASSANDRA_SRC_DIR} && \
     cd apache-cassandra && \
     git checkout ${CASSANDRA_GIT_COMMIT_ID} && \
-    ant -Duse.jdk11=true && \
-    rm -Rf .*.yaml .build build* *.xml .circleci *.md debian *.properties \
-           examples .git* ide .jenkins *.asc redhat *.pom src test
+    if [[ "${JAVA_MAJOR_VERSION}" == "11" ]]; then \
+       ant -Duse.jdk11=true -Drelease=true artifacts ; \
+       mkdir -p ${CASSANDRA_HOME} ; \
+       tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
+    else \
+       ant artifacts ; \
+       mkdir -p ${CASSANDRA_HOME} ; \
+       tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
+    fi
 
 ENV PATH=${CASSANDRA_HOME}/bin:${PATH}
 
@@ -38,3 +48,10 @@ ENV CASSANDRA_HOME=/opt/apache-cassandra
 ENV PATH=${CASSANDRA_HOME}/bin:${PATH}
 
 COPY --from=build /opt/apache-cassandra /opt/apache-cassandra
+
+RUN groupadd -g 1000 cassandra && \
+    useradd -u 1000 -M -s /bin/bash -d ${CASSANDRA_HOME} cassandra -g cassandra && \
+    chown -R cassandra: ${CASSANDRA_HOME}
+
+USER cassandra
+WORKDIR ${CASSANDRA_HOME}
