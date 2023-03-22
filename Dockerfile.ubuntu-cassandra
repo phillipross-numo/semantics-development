@@ -1,5 +1,5 @@
 ARG PREFIX=llsem-
-ARG PARENT_TAG=11
+ARG PARENT_TAG=17
 FROM ${PREFIX}ubuntu-ant:${PARENT_TAG} as build
 
 # install updates and required packages, and cleanup afterward
@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in ant
-ARG CASSANDRA_GIT_COMMIT_ID=3eb605b4
+ARG CASSANDRA_GIT_COMMIT_ID=080ad496
 ARG CASSANDRA_DISTRO_VERSION=5.0
 
 # establish locations for installation and source code
