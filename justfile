@@ -29,14 +29,14 @@ export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.0')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.1.0')
-export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','0e83738b')
-export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','4.8.0-SNAPSHOT')
-export JENA_RELEASE_4_6_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_6_PARENT_TAG','11')
-export JENA_RELEASE_4_6_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_6_GIT_COMMIT_ID','jena-4.6.1')
-export JENA_RELEASE_4_6_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_6_DISTRO_VERSION','4.6.1')
+export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','c8bfccef')
+export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','4.9.0-SNAPSHOT')
 export JENA_RELEASE_4_7_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_7_PARENT_TAG','11')
 export JENA_RELEASE_4_7_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_7_GIT_COMMIT_ID','jena-4.7.0')
 export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_DISTRO_VERSION','4.7.0')
+export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','11')
+export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
+export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','b75f3492')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.17')
 
@@ -201,7 +201,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-11 build-jena-main-17 build-jena-main-20 build-jena-release-4_6 build-jena-release-4_7
+build-jena: build-jena-main-11 build-jena-main-17 build-jena-main-20 build-jena-release-4_7 build-jena-release-4_8
 
 build-jena-main-11: build-maven-11
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
@@ -212,11 +212,11 @@ build-jena-main-17: build-maven-17
 build-jena-main-20: build-maven-20
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:20 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=20 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
 
-build-jena-release-4_6: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_6_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_6_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_6_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_6_DISTRO_VERSION} .
-
 build-jena-release-4_7: build-maven-11
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_7_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_7_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_7_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_7_DISTRO_VERSION} .
+
+build-jena-release-4_8: build-maven-11
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_8_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_8_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_8_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_8_DISTRO_VERSION} .
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
