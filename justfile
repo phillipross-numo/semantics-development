@@ -37,7 +37,7 @@ export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_D
 export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','11')
 export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
 export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
-export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','b75f3492')
+export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','7d125bd0')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.17')
 
 default:
