@@ -1,0 +1,45 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=11
+FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
+
+# install updates and required packages, and cleanup afterward
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install git libffi-dev libssl-dev python3-pip python3-venv r-base make g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin git commit hash along with the version specified in maven
+ARG SPARK_GIT_COMMIT_ID=e05e7e03
+ARG SPARK_DISTRO_VERSION=3.5.0-SNAPSHOT
+
+# establish locations for installation and source code
+ENV SPARK_HOME=/opt/spark
+ENV SPARK_SRC_DIR=/usr/src/build/spark
+
+# clone/checkout from revision control
+RUN mkdir -p ${SPARK_SRC_DIR} && \
+    cd ${SPARK_SRC_DIR} && \
+    git clone https://github.com/apache/spark apache-spark
+
+# build/install software, then cleanup
+RUN mkdir -p ${SPARK_SRC_DIR} && \
+    cd ${SPARK_SRC_DIR} && \
+    cd apache-spark && \
+    git checkout ${SPARK_GIT_COMMIT_ID} && \
+    ./dev/make-distribution.sh --name custom-spark --pip --tgz -Psparkr -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes && \
+    mkdir -p ${SPARK_HOME} && \
+    cd ${SPARK_HOME} && \
+    tar --strip-components=1 -xvz -f ${SPARK_SRC_DIR}/apache-spark/spark-${SPARK_DISTRO_VERSION}-bin-custom-spark.tgz && \
+    rm -Rf /usr/src/build ~/.m2
+
+ENV PATH=${SPARK_HOME}/bin:${PATH}
+
+#############################################################################
+
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} as runtime
+
+ENV SPARK_HOME=/opt/spark
+ENV PATH=${SPARK_HOME}/bin:${PATH}
+
+COPY --from=build /opt/spark /opt/spark

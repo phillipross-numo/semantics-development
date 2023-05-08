@@ -37,13 +37,18 @@ export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_D
 export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','11')
 export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
 export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','fd9b8a09')
+export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.5.0-SNAPSHOT')
+export SPARK_RELEASE_3_4_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_4_PARENT_TAG','17')
+export SPARK_RELEASE_3_4_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.4.0')
+export SPARK_RELEASE_3_4_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.4.0')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','7d125bd0')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.17')
 
 default:
   @echo "Invoke just --list to see a list of possible recipes to run"
 
-all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-widoco
+all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-spark build-widoco
 
 
 # Ubuntu recipes
@@ -224,6 +229,29 @@ list-jena-upstream-main-commit-id:
 list-jena-upstream-main-pom-version:
    curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
+# Spark recipes
+build-spark: build-spark-master-8 build-spark-master-11 build-spark-master-17 build-spark-master-20 build-spark-release-3_4
+
+build-spark-master-8: build-maven-8
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+
+build-spark-master-11: build-maven-11
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+
+build-spark-master-17: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+
+build-spark-master-20: build-maven-20
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:20 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=20 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+
+build-spark-release-3_4: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:${SPARK_RELEASE_3_4_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${SPARK_RELEASE_3_4_PARENT_TAG} --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_4_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_4_DISTRO_VERSION} .
+
+list-spark-upstream-master-commit-id:
+   git ls-remote https://github.com/apache/spark heads/master
+
+list-spark-upstream-master-pom-version:
+   curl -Ls https://raw.githubusercontent.com/apache/spark/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
 # Widoco recipes
 build-widoco: build-widoco-main-11 build-widoco-main-17 build-widoco-main-20
