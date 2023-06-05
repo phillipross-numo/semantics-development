@@ -42,8 +42,8 @@ export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VE
 export SPARK_RELEASE_3_4_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_4_PARENT_TAG','17')
 export SPARK_RELEASE_3_4_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.4.0')
 export SPARK_RELEASE_3_4_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.4.0')
-export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','7d125bd0')
-export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.17')
+export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','eea5c717')
+export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.19')
 
 default:
   @echo "Invoke just --list to see a list of possible recipes to run"
