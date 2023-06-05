@@ -37,7 +37,7 @@ export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_D
 export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','11')
 export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
 export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
-export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','fd9b8a09')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','b00210bd')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.5.0-SNAPSHOT')
 export SPARK_RELEASE_3_4_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_4_PARENT_TAG','17')
 export SPARK_RELEASE_3_4_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.4.0')
@@ -229,6 +229,7 @@ list-jena-upstream-main-commit-id:
 list-jena-upstream-main-pom-version:
    curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
+
 # Spark recipes
 build-spark: build-spark-master-8 build-spark-master-11 build-spark-master-17 build-spark-master-20 build-spark-release-3_4
 
@@ -252,6 +253,7 @@ list-spark-upstream-master-commit-id:
 
 list-spark-upstream-master-pom-version:
    curl -Ls https://raw.githubusercontent.com/apache/spark/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
+
 
 # Widoco recipes
 build-widoco: build-widoco-main-11 build-widoco-main-17 build-widoco-main-20
