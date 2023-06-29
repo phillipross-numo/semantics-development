@@ -21,20 +21,13 @@ export CASSANDRA_TRUNK_PARENT_TAG := env_var_or_default('CASSANDRA_TRUNK_PARENT_
 export CASSANDRA_TRUNK_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_TRUNK_JAVA_MAJOR_VERSION','17')
 export CASSANDRA_TRUNK_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_TRUNK_GIT_COMMIT_ID','c579faa4')
 export CASSANDRA_TRUNK_DISTRO_VERSION := env_var_or_default('CASSANDRA_TRUNK_DISTRO_VERSION','5.0-SNAPSHOT')
-export CASSANDRA_RELEASE_4_0_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_0_PARENT_TAG','11')
-export CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION','11')
-export CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID','cassandra-4.0.8')
-export CASSANDRA_RELEASE_4_0_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.0.8')
 export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION','11')
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
-export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.0')
-export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_0_DISTRO_VERSION','4.1.0')
+export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.2')
+export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.2')
 export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','414e5124')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','4.9.0-SNAPSHOT')
-export JENA_RELEASE_4_7_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_7_PARENT_TAG','11')
-export JENA_RELEASE_4_7_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_7_GIT_COMMIT_ID','jena-4.7.0')
-export JENA_RELEASE_4_7_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_7_DISTRO_VERSION','4.7.0')
-export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','11')
+export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','17')
 export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
 export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
 export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','b00210bd')
@@ -187,13 +180,10 @@ list-blazegraph-upstream-main-pom-version:
 
 
 # Apache Cassandra recipes
-build-cassandra: build-cassandra-trunk build-cassandra-release-4_0 build-cassandra-release-4_1
+build-cassandra: build-cassandra-trunk build-cassandra-release-4_1
 
 build-cassandra-trunk: build-ant-17
    time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_TRUNK_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
-
-build-cassandra-release-4_0: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_0_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_0_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_0_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_0_DISTRO_VERSION} .
 
 build-cassandra-release-4_1: build-ant-11
    time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
@@ -206,10 +196,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-11 build-jena-main-17 build-jena-main-20 build-jena-release-4_7 build-jena-release-4_8
-
-build-jena-main-11: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+build-jena: build-jena-main-17 build-jena-main-20 build-jena-release-4_8
 
 build-jena-main-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
@@ -217,10 +204,7 @@ build-jena-main-17: build-maven-17
 build-jena-main-20: build-maven-20
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:20 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=20 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
 
-build-jena-release-4_7: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_7_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_7_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_7_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_7_DISTRO_VERSION} .
-
-build-jena-release-4_8: build-maven-11
+build-jena-release-4_8: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_8_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_8_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_8_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_8_DISTRO_VERSION} .
 
 list-jena-upstream-main-commit-id:
@@ -231,13 +215,7 @@ list-jena-upstream-main-pom-version:
 
 
 # Spark recipes
-build-spark: build-spark-master-8 build-spark-master-11 build-spark-master-17 build-spark-master-20 build-spark-release-3_4
-
-build-spark-master-8: build-maven-8
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
-
-build-spark-master-11: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+build-spark: build-spark-master-17 build-spark-master-20 build-spark-release-3_4
 
 build-spark-master-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
@@ -256,10 +234,7 @@ list-spark-upstream-master-pom-version:
 
 
 # Widoco recipes
-build-widoco: build-widoco-main-11 build-widoco-main-17 build-widoco-main-20
-
-build-widoco-main-11: build-maven-11
-   time docker image build -f Dockerfile.ubuntu-widoco -t ${PREFIX}ubuntu-widoco:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+build-widoco: build-widoco-main-17 build-widoco-main-20
 
 build-widoco-main-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-widoco -t ${PREFIX}ubuntu-widoco:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
